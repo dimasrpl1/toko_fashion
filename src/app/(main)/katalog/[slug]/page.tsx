@@ -3,9 +3,19 @@ import type { Metadata } from 'next'
 import { Zap } from 'lucide-react'
 import { getProductBySlug, getKoleksiLainnya } from '@/lib/queries'
 import { formatPrice } from '@/lib/format'
+import { createClient } from '@/lib/supabase/server'
 import { FotoGaleri } from '@/components/produk/foto-galeri'
 import { AksiProduk } from '@/components/produk/aksi-produk'
 import { ProductCard } from '@/components/katalog/product-card'
+
+function parseAddress(jsonb: unknown): string {
+  if (!jsonb) return ''
+  if (typeof jsonb === 'string') return jsonb
+  if (typeof jsonb === 'object' && jsonb !== null && 'text' in jsonb) {
+    return String((jsonb as { text: unknown }).text ?? '')
+  }
+  return ''
+}
 
 type Props = { params: Promise<{ slug: string }> }
 
@@ -51,8 +61,29 @@ export default async function DetailProdukPage({ params }: Props) {
 
   if (!product) notFound()
 
-  const isSold     = product.status === 'sold'
-  const lainnya    = await getKoleksiLainnya(slug, 4)
+  const isSold  = product.status === 'sold'
+
+  // Fetch user profile untuk pre-fill data pemesanan
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  let userProfile = null
+  if (user) {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('full_name, phone, address')
+      .eq('id', user.id)
+      .single()
+
+    const oauthName = (user.user_metadata?.full_name ?? user.user_metadata?.name ?? '') as string
+    userProfile = {
+      fullName: profile?.full_name ?? oauthName,
+      phone:    profile?.phone    ?? '',
+      address:  parseAddress(profile?.address),
+    }
+  }
+
+  const lainnya = await getKoleksiLainnya(slug, 4)
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-6 md:py-10">
@@ -135,6 +166,7 @@ export default async function DetailProdukPage({ params }: Props) {
               title={product.title}
               slug={product.slug}
               isSold={isSold}
+              userProfile={userProfile}
             />
           </div>
 

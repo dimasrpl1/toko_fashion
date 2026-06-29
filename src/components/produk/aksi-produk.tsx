@@ -4,23 +4,19 @@ import { useState } from 'react'
 import { MessageCircle, Share2, Check } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { WishlistButton } from '@/components/wishlist/wishlist-button'
+import { BeliSheet, type UserProfile } from './beli-sheet'
 
 interface Props {
   productId: string
   title: string
   slug: string
   isSold: boolean
+  userProfile: UserProfile | null
 }
 
-export function AksiProduk({ productId, title, slug, isSold }: Props) {
-  const [copied, setCopied] = useState(false)
-
-  function handleBeli() {
-    const url   = `${window.location.origin}/katalog/${slug}`
-    const text  = `Halo, saya mau pesan outfit ini:\n\n*${title}*\n${url}`
-    const waNum = process.env.NEXT_PUBLIC_WA_NUMBER ?? ''
-    window.open(`https://wa.me/${waNum}?text=${encodeURIComponent(text)}`, '_blank', 'noopener')
-  }
+export function AksiProduk({ productId, title, slug, isSold, userProfile }: Props) {
+  const [sheetOpen, setSheetOpen] = useState(false)
+  const [copied, setCopied]       = useState(false)
 
   async function handleShare() {
     const url = window.location.href
@@ -36,32 +32,41 @@ export function AksiProduk({ productId, title, slug, isSold }: Props) {
   }
 
   return (
-    <div className="flex flex-col gap-3">
-      {/* Wishlist */}
-      <WishlistButton productId={productId} size="md" />
+    <>
+      <div className="flex flex-col gap-3">
+        <WishlistButton productId={productId} size="md" />
 
-      {/* Beli via WA — disembunyikan jika terjual */}
-      {!isSold && (
-        <button
-          onClick={handleBeli}
-          className="flex h-14 items-center justify-center gap-2 rounded-xl bg-charcoal py-3.5 text-sm font-semibold text-cream transition-colors hover:bg-charcoal/90 active:scale-[0.98]"
-        >
-          <MessageCircle className="h-4 w-4" />
-          Beli via WhatsApp
-        </button>
-      )}
-
-      {/* Bagikan */}
-      <button
-        onClick={handleShare}
-        className={cn(
-          'flex h-12 items-center justify-center gap-2 rounded-xl border border-soft-border text-sm transition-colors',
-          copied ? 'border-taupe text-taupe' : 'text-warm-gray hover:border-charcoal hover:text-charcoal'
+        {!isSold && (
+          <button
+            onClick={() => setSheetOpen(true)}
+            className="flex h-14 items-center justify-center gap-2 rounded-xl bg-charcoal py-3.5 text-sm font-semibold text-cream transition-colors hover:bg-charcoal/90 active:scale-[0.98]"
+          >
+            <MessageCircle className="h-4 w-4" />
+            Beli via WhatsApp
+          </button>
         )}
-      >
-        {copied ? <Check className="h-4 w-4" /> : <Share2 className="h-4 w-4" />}
-        {copied ? 'Link berhasil disalin!' : 'Bagikan'}
-      </button>
-    </div>
+
+        <button
+          onClick={handleShare}
+          className={cn(
+            'flex h-12 items-center justify-center gap-2 rounded-xl border border-soft-border text-sm transition-colors',
+            copied
+              ? 'border-taupe text-taupe'
+              : 'text-warm-gray hover:border-charcoal hover:text-charcoal',
+          )}
+        >
+          {copied ? <Check className="h-4 w-4" /> : <Share2 className="h-4 w-4" />}
+          {copied ? 'Link berhasil disalin!' : 'Bagikan'}
+        </button>
+      </div>
+
+      <BeliSheet
+        isOpen={sheetOpen}
+        onClose={() => setSheetOpen(false)}
+        productTitle={title}
+        productSlug={slug}
+        userProfile={userProfile}
+      />
+    </>
   )
 }
