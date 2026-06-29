@@ -82,6 +82,20 @@
   animation: shimmer 1.6s ease-in-out infinite;
 }
 
+/* ── Marquee ───────────────────────────────────────────────────── */
+@keyframes marquee-x {
+  to { transform: translateX(-50%); }
+}
+
+/* ── Scrollbar hide ────────────────────────────────────────────── */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 /* ── Base ──────────────────────────────────────────────────────── */
 body {
   background-color: #F4EFE7;

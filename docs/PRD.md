@@ -132,13 +132,32 @@ Fondasi yang sudah ditetapkan: **Next.js + Supabase + Vercel**. Berikut stack le
 
 ## 7. Fitur per Halaman (Functional Requirements)
 
-### 7.1 Beranda (`/`) — "Wow" pertama
-Tujuan: begitu orang datang dari IG, langsung terkesan.
-- **Hero** dengan foto outfit andalan + tagline brand + CTA "Lihat Koleksi".
-- Section **"✨ Baru Drop"** — produk terbaru (animasi reveal saat scroll).
-- Section **"🔥 Limited / Hampir Habis"** — menonjolkan scarcity.
-- Optional: **story brand** (fashion rumahan, thrift sustainable) untuk membangun koneksi emosional.
-- Animasi muncul halus saat di-scroll — elegan, tidak berlebihan.
+### 7.1 Beranda (`/`) — etalase utama bergaya brand fashion
+
+**Tujuan & prinsip:** begitu orang datang dari Instagram, dalam 2 detik mereka harus langsung paham *"ini brand fashion 1-of-1, tiap item cuma ada satu, limited"* — lalu tergerak menjelajah. Acuan rasa & kualitasnya: situs brand besar (Nike, Adidas, COS, Aimé Leon Dore) — **didorong oleh visual besar (image-led), bukan teks**, dengan hierarki jelas dan scroll yang terasa "mahal". Disesuaikan untuk skala butik drop-terbatas (bukan mega-retail).
+
+Susunan section dari atas ke bawah:
+
+1. **Hero full-screen (full-viewport).** Satu foto/look outfit andalan memenuhi layar (di mobile: vertikal/portrait), dengan overlay teks minimal: **nama brand + satu kalimat positioning** (mis. *"Outfit preloved & handmade, satu-satunya. Sekali habis, hilang selamanya."*) + **CTA utama "Belanja Koleksi"**. Bisa berupa 2–3 look bergantian (auto-slide halus / swipe). Sertakan petunjuk scroll halus di bawah. Hero inilah yang menghilangkan kebingungan "ini apaan".
+
+2. **Marquee / running text** tipis di bawah hero: teks berjalan `BARU DROP • 1-OF-1 • STOK 1 • LIMITED •` — memberi energi streetwear sekaligus langsung mengkomunikasikan kelangkaan.
+
+3. **"Baru Drop" — product rail horizontal.** Deretan produk terbaru yang **bisa di-swipe ke samping** (seperti rail produk Nike), bukan grid penuh. Tiap kartu: foto, judul, harga, badge "Baru". Tombol "Lihat Semua" → ke katalog.
+
+4. **Blok editorial / lookbook (campaign).** Satu section gambar besar (full-width atau split 50/50 foto–teks) bergaya kampanye: foto styling outfit + headline pendek + CTA. Ini yang memberi kesan "brand", bukan sekadar toko. Boleh ada 1–2 blok editorial.
+
+5. **"Shop by Vibe / Kategori" — image tiles.** 2–3 ubin gambar besar yang bisa diklik (mis. *Vintage*, *Streetwear*, *Feminine*) menuju katalog ter-filter. Foto sebagai latar, teks kategori di atasnya.
+
+6. **"Limited — Hampir Habis".** Sorotan produk yang tinggal sedikit/baru saja diminati, dengan treatment visual berbeda untuk mendorong FOMO.
+
+7. **Brand story strip.** Ringkas (foto + 2–3 kalimat): cerita fashion rumahan, thrift/sustainable, tiap outfit dikurasi tangan. Membangun koneksi emosional. CTA "Tentang Kami" opsional.
+
+8. **Footer kaya.** Link navigasi, Instagram/TikTok (penting—sumber trafik), kontak/WhatsApp, dan (opsional) ajakan follow IG agar tidak ketinggalan drop.
+
+**Catatan UI/animasi:**
+- Tipografi **besar & berani** untuk headline (kesan editorial), banyak whitespace, foto berkualitas sebagai bintang utama — semua dalam palet Cream & Charcoal.
+- Animasi: hero fade-in lembut, **reveal-on-scroll** bertahap per section, hover/tap pada kartu & ubin. Halus dan elegan, **tidak berlebihan**.
+- **Mobile-first**: hero portrait, rail di-swipe pakai jempol, ubin kategori menumpuk rapi. Inilah tampilan yang paling diutamakan.
 
 ### 7.2 Katalog (`/katalog`) — bintang utama produk ini
 - **Grid rapi & responsif:** **2 kolom di HP**, 3–4 di desktop. Rapi dan konsisten (tinggi kartu seragam) supaya katalog terasa bersih dan profesional.
