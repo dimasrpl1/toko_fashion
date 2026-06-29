@@ -1,0 +1,91 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* ── Force light mode ──────────────────────────────────────────── */
+:root {
+  color-scheme: light;
+
+  /* Cream & Charcoal — nilai mentah */
+  --background: #F4EFE7;
+  --foreground: #211F1C;
+  --card: #FBF8F2;
+  --card-foreground: #211F1C;
+  --popover: #FBF8F2;
+  --popover-foreground: #211F1C;
+  --primary: #211F1C;
+  --primary-foreground: #F4EFE7;
+  --secondary: #EFE6D8;
+  --secondary-foreground: #6B5A3E;
+  --muted: #EFE6D8;
+  --muted-foreground: #8C8478;
+  --accent: #A18A6A;
+  --accent-foreground: #F4EFE7;
+  --destructive: #dc2626;
+  --border: #E4DBCB;
+  --input: #E4DBCB;
+  --ring: #A18A6A;
+  --radius: 0.5rem;
+}
+
+/* ── Tailwind v4 design tokens ─────────────────────────────────── */
+@theme inline {
+  /* shadcn-compatible semantic tokens */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /* Brand named tokens — bisa dipakai langsung di class Tailwind */
+  --color-cream: #F4EFE7;
+  --color-warm-white: #FBF8F2;
+  --color-charcoal: #211F1C;
+  --color-warm-gray: #8C8478;
+  --color-taupe: #A18A6A;
+  --color-deep-taupe: #6B5A3E;
+  --color-soft-border: #E4DBCB;
+
+  --font-sans: var(--font-geist);
+}
+
+/* ── Shimmer skeleton ──────────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    #E4DBCB 25%,
+    #EFE6D8 50%,
+    #E4DBCB 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+}
+
+/* ── Base ──────────────────────────────────────────────────────── */
+body {
+  background-color: #F4EFE7;
+  color: #211F1C;
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
