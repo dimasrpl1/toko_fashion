@@ -231,7 +231,7 @@ export function KatalogFilters({ categories, sizes, conditions }: Props) {
       <div className="relative mb-4">
         <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-warm-gray" />
         <input
-          type="search"
+          type="text"
           value={searchValue}
           onChange={(e) => handleSearch(e.target.value)}
           placeholder="Cari outfit, kemeja, dress..."

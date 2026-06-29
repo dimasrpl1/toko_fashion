@@ -1,12 +1,43 @@
 'use client'
 
+import { useState } from 'react'
 import { m, AnimatePresence } from 'motion/react'
-import { Heart } from 'lucide-react'
+import { Heart, X } from 'lucide-react'
 import { useWishlistStore } from '@/store/wishlist-store'
 import { ProductCard } from '@/components/katalog/product-card'
+import { removeFromWishlist } from '@/lib/wishlist-actions'
 import type { Product } from '@/lib/types'
 
 type CardProduct = Pick<Product, 'id' | 'slug' | 'title' | 'price' | 'images' | 'status'>
+
+function RemoveButton({ productId }: { productId: string }) {
+  const remove = useWishlistStore((s) => s.remove)
+  const [isPending, setIsPending] = useState(false)
+
+  async function handleRemove(e: React.MouseEvent) {
+    e.preventDefault()
+    e.stopPropagation()
+    if (isPending) return
+
+    remove(productId) // optimistic
+    setIsPending(true)
+    try {
+      await removeFromWishlist(productId)
+    } finally {
+      setIsPending(false)
+    }
+  }
+
+  return (
+    <button
+      onClick={handleRemove}
+      aria-label="Hapus dari wishlist"
+      className="absolute right-2 top-2 z-10 flex h-7 w-7 items-center justify-center rounded-full bg-charcoal/65 text-cream backdrop-blur-sm transition-colors hover:bg-charcoal"
+    >
+      <X className="h-3.5 w-3.5" />
+    </button>
+  )
+}
 
 interface Props {
   products: CardProduct[]
@@ -16,8 +47,6 @@ export function WishlistGrid({ products }: Props) {
   const ids      = useWishlistStore((s) => s.ids)
   const isLoaded = useWishlistStore((s) => s.isLoaded)
 
-  // Sebelum store terload, tampilkan semua produk server-rendered (tidak ada flash).
-  // Setelah terload, filter hanya yang masih di wishlist (tangani optimistic remove).
   const visible = isLoaded
     ? products.filter((p) => ids.has(p.id))
     : products
@@ -45,7 +74,9 @@ export function WishlistGrid({ products }: Props) {
             layout
             exit={{ opacity: 0, scale: 0.85 }}
             transition={{ duration: 0.22, ease: 'easeOut' }}
+            className="relative"
           >
+            <RemoveButton productId={product.id} />
             <ProductCard product={product} />
           </m.div>
         ))}
