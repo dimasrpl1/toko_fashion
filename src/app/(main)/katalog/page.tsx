@@ -16,6 +16,7 @@ function getString(val: string | string[] | undefined): string {
 export default async function KatalogPage({ searchParams }: { searchParams: SearchParams }) {
   const sp = await searchParams
 
+  const q        = getString(sp.q)
   const status   = getString(sp.status)
   const kategori = getString(sp.kategori)
   const ukuran   = getString(sp.ukuran)
@@ -32,6 +33,7 @@ export default async function KatalogPage({ searchParams }: { searchParams: Sear
     .select('id, slug, title, price, size, condition, category, images, status, created_at')
     .eq('is_active', true)
 
+  if (q)        query = query.ilike('title', `%${q}%`)
   if (status === 'available' || status === 'sold') {
     query = query.eq('status', status)
   }
@@ -70,7 +72,7 @@ export default async function KatalogPage({ searchParams }: { searchParams: Sear
       <div className="mb-6">
         <h1 className="text-2xl font-semibold text-charcoal">Katalog</h1>
         <p className="mt-1 text-sm text-warm-gray">
-          {sorted.length} item ditemukan
+          {sorted.length} item{q ? ` untuk "${q}"` : ' ditemukan'}
         </p>
       </div>
 

@@ -90,14 +90,14 @@ export function FotoGaleri({ images, title, isSold }: Props) {
             <button
               onClick={() => navigate(-1)}
               aria-label="Foto sebelumnya"
-              className="absolute left-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-warm-white/80 opacity-0 backdrop-blur-sm transition-opacity group-hover:opacity-100 focus-visible:opacity-100"
+              className="absolute left-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-warm-white/80 backdrop-blur-sm transition-opacity opacity-100 md:opacity-0 md:group-hover:opacity-100 focus-visible:opacity-100"
             >
               <ChevronLeft className="h-5 w-5 text-charcoal" />
             </button>
             <button
               onClick={() => navigate(1)}
               aria-label="Foto berikutnya"
-              className="absolute right-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-warm-white/80 opacity-0 backdrop-blur-sm transition-opacity group-hover:opacity-100 focus-visible:opacity-100"
+              className="absolute right-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-warm-white/80 backdrop-blur-sm transition-opacity opacity-100 md:opacity-0 md:group-hover:opacity-100 focus-visible:opacity-100"
             >
               <ChevronRight className="h-5 w-5 text-charcoal" />
             </button>
