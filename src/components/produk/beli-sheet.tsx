@@ -32,18 +32,27 @@ function openWA(message: string) {
   )
 }
 
-/* ── Root sheet ───────────────────────────────────────────────── */
-export function BeliSheet({ isOpen, onClose, productTitle, productSlug, userProfile }: Props) {
-  const [step, setStep] = useState<Step>('pilihan')
-  const [form, setForm] = useState({ name: '', phone: '', address: '' })
-  const dragControls = useDragControls()
-
-  // Reset step setiap kali sheet dibuka
+function useIsMobile(breakpoint = 768) {
+  const [isMobile, setIsMobile] = useState(true)
   useEffect(() => {
-    if (isOpen) setStep('pilihan')
-  }, [isOpen])
+    const mq = window.matchMedia(`(max-width: ${breakpoint - 1}px)`)
+    setIsMobile(mq.matches)
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches)
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
+  }, [breakpoint])
+  return isMobile
+}
 
-  // Scroll lock
+/* ── Root ─────────────────────────────────────────────────────── */
+export function BeliSheet({ isOpen, onClose, productTitle, productSlug, userProfile }: Props) {
+  const [step, setStep]   = useState<Step>('pilihan')
+  const [form, setForm]   = useState({ name: '', phone: '', address: '' })
+  const dragControls      = useDragControls()
+  const isMobile          = useIsMobile()
+
+  useEffect(() => { if (isOpen) setStep('pilihan') }, [isOpen])
+
   useEffect(() => {
     document.body.style.overflow = isOpen ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
@@ -51,22 +60,56 @@ export function BeliSheet({ isOpen, onClose, productTitle, productSlug, userProf
 
   function handleTanya() {
     const url = `${window.location.origin}/katalog/${productSlug}`
-    const msg = `Halo kak, saya ingin menanyakan tentang outfit ini : ${productTitle} ${url}`
-    openWA(msg)
+    openWA(`Halo kak, saya ingin menanyakan tentang outfit ini : ${productTitle} ${url}`)
     onClose()
   }
 
   function handleKirim(name: string, phone: string, address: string) {
     const url = `${window.location.origin}/katalog/${productSlug}`
-    const msg =
+    openWA(
       `Nama Lengkap : ${name}\n` +
       `No Telepon: ${phone}\n` +
       `Alamat Lengkap : ${address}\n\n` +
       `Halo kak, saya ingin pesan outfit ini:\n\n` +
-      `${productTitle}\n${url}`
-    openWA(msg)
+      `${productTitle}\n${url}`,
+    )
     onClose()
   }
+
+  /* Konten bersama antara mobile sheet & desktop modal */
+  const sheetContent = (
+    <div className={cn('overflow-y-auto px-5 pb-10 pt-1', isMobile ? 'max-h-[82vh]' : 'max-h-[75vh]')}>
+      <AnimatePresence mode="wait" initial={false}>
+        {step === 'pilihan' ? (
+          <m.div
+            key="pilihan"
+            initial={{ opacity: 0, x: -14 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -14 }}
+            transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <PilihanStep onTanya={handleTanya} onPesan={() => setStep('pesan')} onClose={onClose} />
+          </m.div>
+        ) : (
+          <m.div
+            key="pesan"
+            initial={{ opacity: 0, x: 14 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 14 }}
+            transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <PesanStep
+              userProfile={userProfile}
+              form={form}
+              setForm={setForm}
+              onBack={() => setStep('pilihan')}
+              onKirim={handleKirim}
+            />
+          </m.div>
+        )}
+      </AnimatePresence>
+    </div>
+  )
 
   return (
     <AnimatePresence>
@@ -82,68 +125,48 @@ export function BeliSheet({ isOpen, onClose, productTitle, productSlug, userProf
             onClick={onClose}
           />
 
-          {/* Sheet panel */}
-          <m.div
-            initial={{ y: '100%' }}
-            animate={{ y: 0 }}
-            exit={{ y: '100%' }}
-            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            drag="y"
-            dragControls={dragControls}
-            dragListener={false}
-            dragConstraints={{ top: 0, bottom: 0 }}
-            dragElastic={{ top: 0, bottom: 0.4 }}
-            onDragEnd={(_, info) => {
-              if (info.offset.y > 80 || info.velocity.y > 400) onClose()
-            }}
-            className="fixed bottom-0 left-0 right-0 z-50 rounded-t-3xl bg-background shadow-2xl"
-          >
-            {/* Handle */}
-            <div
-              onPointerDown={(e) => dragControls.start(e)}
-              style={{ touchAction: 'none' }}
-              className="flex cursor-grab justify-center pb-3 pt-4 active:cursor-grabbing"
+          {isMobile ? (
+            /* ── Mobile: bottom sheet ── */
+            <m.div
+              key="mobile"
+              initial={{ y: '100%' }}
+              animate={{ y: 0 }}
+              exit={{ y: '100%' }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              drag="y"
+              dragControls={dragControls}
+              dragListener={false}
+              dragConstraints={{ top: 0, bottom: 0 }}
+              dragElastic={{ top: 0, bottom: 0.4 }}
+              onDragEnd={(_, info) => {
+                if (info.offset.y > 80 || info.velocity.y > 400) onClose()
+              }}
+              className="fixed bottom-0 left-0 right-0 z-50 rounded-t-3xl bg-background shadow-2xl"
             >
-              <div className="h-1 w-10 rounded-full bg-soft-border" />
-            </div>
-
-            {/* Scrollable content */}
-            <div className="max-h-[82vh] overflow-y-auto px-5 pb-10 pt-1">
-              <AnimatePresence mode="wait" initial={false}>
-                {step === 'pilihan' ? (
-                  <m.div
-                    key="pilihan"
-                    initial={{ opacity: 0, x: -16 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -16 }}
-                    transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-                  >
-                    <PilihanStep
-                      onTanya={handleTanya}
-                      onPesan={() => setStep('pesan')}
-                      onClose={onClose}
-                    />
-                  </m.div>
-                ) : (
-                  <m.div
-                    key="pesan"
-                    initial={{ opacity: 0, x: 16 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: 16 }}
-                    transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-                  >
-                    <PesanStep
-                      userProfile={userProfile}
-                      form={form}
-                      setForm={setForm}
-                      onBack={() => setStep('pilihan')}
-                      onKirim={handleKirim}
-                    />
-                  </m.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </m.div>
+              {/* Drag handle */}
+              <div
+                onPointerDown={(e) => dragControls.start(e)}
+                style={{ touchAction: 'none' }}
+                className="flex cursor-grab justify-center pb-3 pt-4 active:cursor-grabbing"
+              >
+                <div className="h-1 w-10 rounded-full bg-soft-border" />
+              </div>
+              {sheetContent}
+            </m.div>
+          ) : (
+            /* ── Desktop: centered modal ── */
+            <m.div
+              key="desktop"
+              initial={{ opacity: 0, scale: 0.96, x: '-50%', y: '-48%' }}
+              animate={{ opacity: 1, scale: 1,    x: '-50%', y: '-50%' }}
+              exit={{    opacity: 0, scale: 0.96, x: '-50%', y: '-48%' }}
+              transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+              style={{ left: '50%', top: '50%' }}
+              className="fixed z-50 w-full max-w-md rounded-2xl bg-background shadow-2xl"
+            >
+              {sheetContent}
+            </m.div>
+          )}
         </>
       )}
     </AnimatePresence>
@@ -152,14 +175,8 @@ export function BeliSheet({ isOpen, onClose, productTitle, productSlug, userProf
 
 /* ── Step 1: Pilihan ──────────────────────────────────────────── */
 function PilihanStep({
-  onTanya,
-  onPesan,
-  onClose,
-}: {
-  onTanya: () => void
-  onPesan: () => void
-  onClose: () => void
-}) {
+  onTanya, onPesan, onClose,
+}: { onTanya: () => void; onPesan: () => void; onClose: () => void }) {
   return (
     <div>
       <div className="mb-5 flex items-center justify-between">
@@ -174,7 +191,6 @@ function PilihanStep({
       </div>
 
       <div className="flex flex-col gap-3">
-        {/* Tanya */}
         <button
           onClick={onTanya}
           className="flex items-start gap-4 rounded-2xl border border-soft-border bg-warm-white p-4 text-left transition-colors hover:border-charcoal"
@@ -190,7 +206,6 @@ function PilihanStep({
           </div>
         </button>
 
-        {/* Pesan */}
         <button
           onClick={onPesan}
           className="flex items-start gap-4 rounded-2xl bg-charcoal p-4 text-left"
@@ -219,11 +234,7 @@ function PilihanStep({
 
 /* ── Step 2: Pesan ────────────────────────────────────────────── */
 function PesanStep({
-  userProfile,
-  form,
-  setForm,
-  onBack,
-  onKirim,
+  userProfile, form, setForm, onBack, onKirim,
 }: {
   userProfile: UserProfile | null
   form: { name: string; phone: string; address: string }
@@ -241,20 +252,16 @@ function PesanStep({
     </button>
   )
 
-  /* ── Logged-in: tampilkan data profil ── */
   if (userProfile !== null) {
     const hasAllData = !!(userProfile.fullName && userProfile.phone && userProfile.address)
-
     return (
       <div>
         {backBtn}
-        <h2 className="mb-4 text-base font-semibold text-charcoal">
-          Konfirmasi data pengiriman
-        </h2>
+        <h2 className="mb-4 text-base font-semibold text-charcoal">Konfirmasi data pengiriman</h2>
 
         <div className="rounded-2xl border border-soft-border bg-warm-white">
-          <ProfileRow label="Nama Lengkap" value={userProfile.fullName} />
-          <ProfileRow label="No Telepon" value={userProfile.phone} />
+          <ProfileRow label="Nama Lengkap"  value={userProfile.fullName} />
+          <ProfileRow label="No Telepon"    value={userProfile.phone} />
           <ProfileRow label="Alamat Lengkap" value={userProfile.address} isLast />
         </div>
 
@@ -283,7 +290,6 @@ function PesanStep({
     )
   }
 
-  /* ── Guest: form isi data ── */
   const canSubmit = form.name.trim() && form.phone.trim() && form.address.trim()
 
   return (
@@ -341,15 +347,7 @@ function PesanStep({
 }
 
 /* ── Helpers ──────────────────────────────────────────────────── */
-function ProfileRow({
-  label,
-  value,
-  isLast = false,
-}: {
-  label: string
-  value: string
-  isLast?: boolean
-}) {
+function ProfileRow({ label, value, isLast = false }: { label: string; value: string; isLast?: boolean }) {
   return (
     <div className={cn('px-4 py-3', !isLast && 'border-b border-soft-border')}>
       <p className="text-[11px] font-semibold uppercase tracking-wide text-warm-gray">{label}</p>
