@@ -6,7 +6,6 @@ import { Marquee } from '@/components/beranda/marquee'
 import { ProductRail } from '@/components/beranda/product-rail'
 import { EditorialBlock } from '@/components/beranda/editorial-block'
 import { VibeTiles } from '@/components/beranda/vibe-tiles'
-import { LimitedSection } from '@/components/beranda/limited-section'
 import { BrandStory } from '@/components/beranda/brand-story'
 import { BerandaFooter } from '@/components/beranda/beranda-footer'
 
@@ -22,17 +21,7 @@ type CardProduct = Pick<Product, 'id' | 'slug' | 'title' | 'price' | 'images' | 
 export default async function BerandaPage() {
   const supabase = await createClient()
 
-  const [{ data: featured }, { data: baruDrop }] = await Promise.all([
-    /* Produk featured: untuk section "Limited / Hampir Habis" */
-    supabase
-      .from('products')
-      .select('id, slug, title, price, images, status')
-      .eq('is_featured', true)
-      .eq('is_active', true)
-      .eq('status', 'available')
-      .order('sort_order', { ascending: true })
-      .limit(4),
-
+  const [{ data: baruDrop }, { data: filterData }] = await Promise.all([
     /* 8 produk terbaru tersedia: untuk rail "Baru Drop" */
     supabase
       .from('products')
@@ -41,10 +30,21 @@ export default async function BerandaPage() {
       .eq('status', 'available')
       .order('created_at', { ascending: false })
       .limit(8),
+
+    /* Ambil kategori yang ada — sama persis seperti filter katalog */
+    supabase
+      .from('products')
+      .select('category')
+      .eq('is_active', true),
   ])
 
   const baruDropProducts = (baruDrop ?? []) as unknown as CardProduct[]
-  const limitedProducts  = (featured ?? []) as unknown as CardProduct[]
+
+  const categories = [
+    ...new Set(
+      (filterData ?? []).map((p) => p.category).filter(Boolean) as string[],
+    ),
+  ]
 
   return (
     <>
@@ -52,8 +52,7 @@ export default async function BerandaPage() {
       <Marquee />
       <ProductRail products={baruDropProducts} />
       <EditorialBlock />
-      <VibeTiles />
-      <LimitedSection products={limitedProducts} />
+      <VibeTiles categories={categories} />
       <BrandStory />
       <BerandaFooter />
     </>
