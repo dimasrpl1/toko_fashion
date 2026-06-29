@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
 import type { Product } from '@/lib/types'
-import { HeroFull, type HeroSlide } from '@/components/beranda/hero-full'
+import { HeroFull } from '@/components/beranda/hero-full'
 import { Marquee } from '@/components/beranda/marquee'
 import { ProductRail } from '@/components/beranda/product-rail'
 import { EditorialBlock } from '@/components/beranda/editorial-block'
@@ -23,7 +23,7 @@ export default async function BerandaPage() {
   const supabase = await createClient()
 
   const [{ data: featured }, { data: baruDrop }] = await Promise.all([
-    /* Produk featured: dipakai untuk hero slides + limited section */
+    /* Produk featured: untuk section "Limited / Hampir Habis" */
     supabase
       .from('products')
       .select('id, slug, title, price, images, status')
@@ -31,9 +31,9 @@ export default async function BerandaPage() {
       .eq('is_active', true)
       .eq('status', 'available')
       .order('sort_order', { ascending: true })
-      .limit(6),
+      .limit(4),
 
-    /* 8 produk terbaru tersedia */
+    /* 8 produk terbaru tersedia: untuk rail "Baru Drop" */
     supabase
       .from('products')
       .select('id, slug, title, price, images, status')
@@ -43,40 +43,18 @@ export default async function BerandaPage() {
       .limit(8),
   ])
 
-  /* Hero slides: pakai gambar pertama tiap featured product */
-  const heroSlides: HeroSlide[] = (featured ?? [])
-    .filter((p) => (p.images as string[]).length > 0)
-    .slice(0, 5)
-    .map((p) => ({ image: (p.images as string[])[0], alt: p.title as string }))
-
-  /* Editorial: gambar dari featured[0], fallback ke baruDrop[0] */
-  const editorialImg =
-    (featured?.[0]?.images as string[] | undefined)?.[0] ??
-    (baruDrop?.[0]?.images as string[] | undefined)?.[0] ??
-    null
-  const editorialSlug =
-    (featured?.[0]?.slug as string | undefined) ??
-    (baruDrop?.[0]?.slug as string | undefined) ??
-    null
-
-  /* Brand story: gambar dari featured[1] atau baruDrop[2] */
-  const storyImg =
-    (featured?.[1]?.images as string[] | undefined)?.[0] ??
-    (baruDrop?.[2]?.images as string[] | undefined)?.[0] ??
-    null
-
   const baruDropProducts = (baruDrop ?? []) as unknown as CardProduct[]
   const limitedProducts  = (featured ?? []) as unknown as CardProduct[]
 
   return (
     <>
-      <HeroFull slides={heroSlides} />
+      <HeroFull />
       <Marquee />
       <ProductRail products={baruDropProducts} />
-      <EditorialBlock image={editorialImg} slug={editorialSlug} />
+      <EditorialBlock />
       <VibeTiles />
       <LimitedSection products={limitedProducts} />
-      <BrandStory image={storyImg} />
+      <BrandStory />
       <BerandaFooter />
     </>
   )

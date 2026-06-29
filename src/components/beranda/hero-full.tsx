@@ -12,17 +12,28 @@ export interface HeroSlide {
   alt: string
 }
 
-interface Props {
-  slides: HeroSlide[]
-}
+/*
+ * Ganti URL di bawah dengan foto brand yang sudah dikurasi.
+ * Gunakan foto portrait dengan rasio 2:3, ukuran minimal 1200×1800px.
+ * Semua foto harus punya komposisi dan tone yang konsisten.
+ */
+const SLIDES: HeroSlide[] = [
+  {
+    image: 'https://placehold.co/800x1200/211F1C/F4EFE7?text=Look+01',
+    alt: 'n1mpo look 01',
+  },
+  {
+    image: 'https://placehold.co/800x1200/3D3B38/A18A6A?text=Look+02',
+    alt: 'n1mpo look 02',
+  },
+  {
+    image: 'https://placehold.co/800x1200/6B5A3E/EFE6D8?text=Look+03',
+    alt: 'n1mpo look 03',
+  },
+]
 
-const PLACEHOLDER: HeroSlide = {
-  image: 'https://placehold.co/800x1200/211F1C/F4EFE7?text=n1mpo',
-  alt: 'n1mpo — outfit unik thrifted',
-}
-
-export function HeroFull({ slides }: Props) {
-  const all = slides.length > 0 ? slides : [PLACEHOLDER]
+export function HeroFull() {
+  const all = SLIDES
   const [current, setCurrent] = useState(0)
 
   useEffect(() => {

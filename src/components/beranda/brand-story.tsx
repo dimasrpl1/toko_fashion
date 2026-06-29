@@ -4,15 +4,15 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { m } from 'motion/react'
 
-interface Props {
-  image: string | null
-}
-
+/*
+ * Ganti URL di bawah dengan foto brand story (portrait 3:4, min 900×1200px).
+ * Bisa foto behind-the-scenes, flat lay, atau mood shot yang hangat.
+ */
 // judul asli nya nojstudioid cuman untuk sementara n1mpo dulu
-const PLACEHOLDER = 'https://placehold.co/600x800/A18A6A/F4EFE7?text=n1mpo'
+const STORY_IMG = 'https://placehold.co/600x800/A18A6A/F4EFE7?text=n1mpo'
 
-export function BrandStory({ image }: Props) {
-  const img = image ?? PLACEHOLDER
+export function BrandStory() {
+  const img = STORY_IMG
 
   return (
     <section className="border-y border-soft-border bg-background py-14 md:py-20">

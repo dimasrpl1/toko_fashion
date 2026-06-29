@@ -4,17 +4,17 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { m } from 'motion/react'
 
-interface Props {
-  image: string | null
-  slug: string | null
-}
-
+/*
+ * Ganti URL di bawah dengan foto editorial brand (portrait 4:5, min 1200×1500px).
+ * Foto idealnya berwarna gelap/moodier agar kontras dengan teks cream.
+ */
 // judul asli nya nojstudioid cuman untuk sementara n1mpo dulu
-const PLACEHOLDER = 'https://placehold.co/800x1000/211F1C/A18A6A?text=n1mpo'
+const EDITORIAL_IMG = 'https://placehold.co/800x1000/211F1C/A18A6A?text=n1mpo'
+const EDITORIAL_HREF = '/katalog'
 
-export function EditorialBlock({ image, slug }: Props) {
-  const img  = image ?? PLACEHOLDER
-  const href = slug ? `/katalog/${slug}` : '/katalog'
+export function EditorialBlock() {
+  const img  = EDITORIAL_IMG
+  const href = EDITORIAL_HREF
 
   return (
     <section className="overflow-hidden bg-charcoal">
@@ -25,7 +25,7 @@ export function EditorialBlock({ image, slug }: Props) {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
-          className="relative aspect-3/4 overflow-hidden md:aspect-auto md:min-h-[600px]"
+          className="relative aspect-3/4 overflow-hidden md:aspect-auto md:min-h-150"
         >
           <Image
             src={img}
