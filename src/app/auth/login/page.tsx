@@ -14,8 +14,9 @@ export default async function LoginPage({ searchParams }: Props) {
       <div className="w-full max-w-sm">
         {/* Logo */}
         <div className="mb-8 text-center">
+          {/* judul asli nya nojstudioid cuman untuk sementara n1mpo dulu */}
           <Link href="/" className="text-lg font-semibold tracking-wide text-charcoal">
-            nojstudio.id
+            n1mpo
           </Link>
           <p className="mt-2 text-sm text-warm-gray">
             Masuk untuk menyimpan outfit favoritmu ke wishlist
@@ -26,7 +27,8 @@ export default async function LoginPage({ searchParams }: Props) {
         <div className="rounded-2xl border border-soft-border bg-warm-white p-6 shadow-sm">
           <LoginButton next={next} />
           <p className="mt-4 text-center text-xs text-warm-gray">
-            Dengan masuk, kamu setuju dengan kebijakan privasi nojstudio.id.
+            {/* judul asli nya nojstudioid cuman untuk sementara n1mpo dulu */}
+            Dengan masuk, kamu setuju dengan kebijakan privasi n1mpo.
           </p>
         </div>
 

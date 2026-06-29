@@ -19,7 +19,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const price     = formatPrice(product.price)
   const desc      = product.description
     ? `${product.description.slice(0, 120)}…`
-    : `${price}${product.size ? ` · Ukuran ${product.size}` : ''} · nojstudio.id`
+    // judul asli nya nojstudioid cuman untuk sementara n1mpo dulu
+    : `${price}${product.size ? ` · Ukuran ${product.size}` : ''} · n1mpo`
   const ogImage   = product.images[0]
     ? [{ url: product.images[0], width: 600, height: 800, alt: product.title }]
     : []
@@ -29,7 +30,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: desc,
     openGraph: {
       title:       product.title,
-      description: `${price}${product.size ? ` · Ukuran ${product.size}` : ''} · nojstudio.id`,
+      // judul asli nya nojstudioid cuman untuk sementara n1mpo dulu
+      description: `${price}${product.size ? ` · Ukuran ${product.size}` : ''} · n1mpo`,
       images:      ogImage,
       type:        'website',
     },

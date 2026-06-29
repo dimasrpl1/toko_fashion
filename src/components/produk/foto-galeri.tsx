@@ -6,7 +6,8 @@ import { m, AnimatePresence } from 'motion/react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
-const PLACEHOLDER = 'https://placehold.co/600x800/F4EFE7/8C8478?text=nojstudio.id'
+// judul asli nya nojstudioid cuman untuk sementara n1mpo dulu
+const PLACEHOLDER = 'https://placehold.co/600x800/F4EFE7/8C8478?text=n1mpo'
 
 const SWIPE_THRESHOLD = 50   // px offset minimum
 const SWIPE_VELOCITY  = 300  // px/s minimum

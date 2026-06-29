@@ -15,14 +15,16 @@ export const metadata: Metadata = {
         ? `https://${process.env.VERCEL_URL}`
         : 'http://localhost:3000')
   ),
+  // judul asli nya nojstudioid cuman untuk sementara n1mpo dulu
   title: {
-    default: 'nojstudio.id',
-    template: '%s | nojstudio.id',
+    default: 'n1mpo',
+    template: '%s | n1mpo',
   },
   description: 'Katalog outfit unik & terbatas — fashion rumahan yang bikin tampil beda.',
   icons: { icon: '/nojstudioid.jpg' },
   openGraph: {
-    siteName: 'nojstudio.id',
+    // judul asli nya nojstudioid cuman untuk sementara n1mpo dulu
+    siteName: 'n1mpo',
     locale: 'id_ID',
     type: 'website',
   },

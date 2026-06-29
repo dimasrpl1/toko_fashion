@@ -7,7 +7,8 @@ import { formatPrice } from '@/lib/format'
 import type { Product } from '@/lib/types'
 import { WishlistButton } from '@/components/wishlist/wishlist-button'
 
-const PLACEHOLDER = 'https://placehold.co/600x800/F4EFE7/8C8478?text=nojstudio.id'
+// judul asli nya nojstudioid cuman untuk sementara n1mpo dulu
+const PLACEHOLDER = 'https://placehold.co/600x800/F4EFE7/8C8478?text=n1mpo'
 
 type CardProduct = Pick<Product, 'id' | 'slug' | 'title' | 'price' | 'images' | 'status'>
 
@@ -18,7 +19,7 @@ export function ProductCard({ product }: { product: CardProduct }) {
 
   return (
     <article className="group overflow-hidden rounded-xl border border-soft-border bg-warm-white">
-      <Link href={`/katalog/${product.slug}`} className="relative block aspect-[3/4] overflow-hidden">
+      <Link href={`/katalog/${product.slug}`} className="relative block aspect-3/4 overflow-hidden">
         <Image
           src={img1}
           alt={product.title}

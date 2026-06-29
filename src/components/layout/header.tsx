@@ -15,8 +15,9 @@ export function Header() {
   return (
     <header className="hidden md:flex sticky top-0 z-40 w-full border-b border-soft-border bg-warm-white/80 backdrop-blur-sm">
       <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-6">
+        {/* judul asli nya nojstudioid cuman untuk sementara n1mpo dulu */}
         <Link href="/" className="text-base font-semibold tracking-wide text-charcoal">
-          nojstudio.id
+          n1mpo
         </Link>
 
         <nav className="flex items-center gap-8">
