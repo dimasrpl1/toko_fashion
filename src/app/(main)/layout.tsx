@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { isAdmin } from '@/lib/auth'
 import { Header } from '@/components/layout/header'
 import { BottomNav } from '@/components/layout/bottom-nav'
 import { WishlistProvider } from '@/components/providers/wishlist-provider'
@@ -17,13 +18,16 @@ export default async function MainLayout({ children }: { children: React.ReactNo
     wishlistIds = data?.map((w) => w.product_id as string) ?? []
   }
 
+  // isAdmin() di-cache per request — panggilan kedua dari UserNav tidak query DB lagi
+  const adminUser = user ? await isAdmin() : false
+
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
       <WishlistProvider initialIds={wishlistIds} isLoggedIn={!!user}>
         <main className="flex-1 pb-16 md:pb-0">{children}</main>
       </WishlistProvider>
-      <BottomNav />
+      <BottomNav isAdmin={adminUser} />
     </div>
   )
 }

@@ -2,22 +2,25 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Home, LayoutGrid, Heart, User } from 'lucide-react'
+import { Home, LayoutGrid, Heart, User, ShieldCheck } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { WishlistBadge } from '@/components/wishlist/wishlist-badge'
 
-const navItems = [
-  { href: '/',             label: 'Beranda',  Icon: Home,        badge: false },
-  { href: '/katalog',      label: 'Katalog',  Icon: LayoutGrid,  badge: false },
-  { href: '/akun/wishlist',label: 'Wishlist', Icon: Heart,       badge: true  },
-  { href: '/akun',         label: 'Akun',     Icon: User,        badge: false },
+const BASE_ITEMS = [
+  { href: '/',              label: 'Beranda',  Icon: Home,        badge: false },
+  { href: '/katalog',       label: 'Katalog',  Icon: LayoutGrid,  badge: false },
+  { href: '/akun/wishlist', label: 'Wishlist', Icon: Heart,       badge: true  },
+  { href: '/akun',          label: 'Akun',     Icon: User,        badge: false },
 ]
 
-export function BottomNav() {
-  const pathname = usePathname()
+const ADMIN_ITEM = { href: '/admin', label: 'Admin', Icon: ShieldCheck, badge: false }
+
+export function BottomNav({ isAdmin = false }: { isAdmin?: boolean }) {
+  const pathname  = usePathname()
+  const navItems  = isAdmin ? [...BASE_ITEMS, ADMIN_ITEM] : BASE_ITEMS
 
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 border-t border-soft-border bg-warm-white/95 backdrop-blur-sm">
+    <nav className="fixed bottom-0 left-0 right-0 z-40 border-t border-soft-border bg-warm-white/95 backdrop-blur-sm md:hidden">
       <div className="flex h-16 items-center">
         {navItems.map(({ href, label, Icon, badge }) => {
           const isActive = href === '/' ? pathname === '/' : pathname.startsWith(href)
@@ -28,7 +31,7 @@ export function BottomNav() {
               href={href}
               className={cn(
                 'flex flex-1 flex-col items-center justify-center gap-1 py-2 text-xs transition-colors',
-                isActive ? 'text-taupe' : 'text-warm-gray'
+                isActive ? 'text-taupe' : 'text-warm-gray',
               )}
             >
               <span className="relative">

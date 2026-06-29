@@ -1,3 +1,4 @@
+import { cache } from 'react'
 import { createClient } from '@/lib/supabase/server'
 import type { User } from '@supabase/supabase-js'
 
@@ -9,11 +10,11 @@ export async function getCurrentUser(): Promise<User | null> {
 }
 
 /**
- * Mengecek apakah user yang sedang login adalah admin
- * (kolom `role = 'admin'` di tabel profiles).
- * Dipakai untuk proteksi halaman /admin/*.
+ * Mengecek apakah user yang sedang login adalah admin.
+ * Di-cache per request — aman dipanggil dari beberapa tempat
+ * (layout, UserNav, dll.) tanpa DB query ganda.
  */
-export async function isAdmin(): Promise<boolean> {
+export const isAdmin = cache(async (): Promise<boolean> => {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return false
@@ -25,4 +26,4 @@ export async function isAdmin(): Promise<boolean> {
     .single()
 
   return data?.role === 'admin'
-}
+})
