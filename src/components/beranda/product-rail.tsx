@@ -27,7 +27,7 @@ export function ProductRail({ products }: Props) {
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             className="text-xl font-semibold text-charcoal md:text-2xl"
           >
-            ✨ Baru Drop
+            Baru Drop
           </m.h2>
 
           <m.div

@@ -1,14 +1,11 @@
 import type { Metadata } from 'next'
+import { KontakContent } from '@/components/kontak/kontak-content'
 
-export const metadata: Metadata = { title: 'Kontak' }
+export const metadata: Metadata = {
+  title: 'Kontak',
+  description: 'Hubungi n1mpo lewat WhatsApp, Instagram, atau TikTok.',
+}
 
 export default function KontakPage() {
-  return (
-    <div className="flex min-h-[60vh] items-center justify-center">
-      <div className="text-center">
-        <h1 className="text-2xl font-semibold text-charcoal">Kontak</h1>
-        <p className="mt-2 text-warm-gray">Info & form pesan — segera hadir</p>
-      </div>
-    </div>
-  )
+  return <KontakContent />
 }

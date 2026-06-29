@@ -1,6 +1,6 @@
 # PRD — Website Katalog Fashion "Limited Outfit"
 
-**Versi:** 1.3
+**Versi:** 1.4
 **Tanggal:** 27 Juni 2026
 **Status:** Draft untuk dikembangkan
 **Jenis produk:** Website **katalog/lookbook fashion rumahan** dengan stok terbatas (1 item per produk). Transaksi/pembayaran masuk fase lanjutan.
@@ -10,6 +10,8 @@
 > **Perubahan v1.2:** Produk `sold` tampil di katalog tapi **selalu diurutkan paling akhir**, dengan **filter status (Tersedia / Terjual)**. Layout katalog = **grid rapi** (bukan masonry). **Tanpa** teaser feed Instagram di beranda. **Wishlist wajib login.**
 >
 > **Perubahan v1.3:** Palet warna final dipilih = **"Cream & Charcoal"** (lihat Bagian 13.A) — lengkap dengan kode hex & aturan pemakaian.
+>
+> **Perubahan v1.4:** Beranda (7.1) dirombak jadi layout bergaya brand fashion besar (hero full-screen, product rail, blok editorial). Halaman Kontak (7.4) **tanpa form pesan** & dibuat lebih menarik; tabel `messages` **dihapus** dari skema.
 
 ---
 
@@ -179,8 +181,7 @@ Susunan section dari atas ke bawah:
 - Kalau `sold`: tampilkan "Sudah Terjual" + saran produk lain.
 
 ### 7.4 Kontak (`/kontak`)
-- Info toko, link **WhatsApp** (klik buka chat), Instagram/TikTok.
-- Form pesan sederhana (nama, pesan) → masuk tabel `messages` Supabase.
+Halaman kontak dibuat **menarik & premium** (konsisten gaya brand, image-led, palet Cream & Charcoal), **tanpa form pesan**. Susunan: header editorial (headline besar + satu kalimat hangat), lalu **channel utama sebagai tile besar yang bisa diklik** — WhatsApp (CTA paling menonjol, buka chat admin), Instagram (ditonjolkan karena sumber utama trafik), dan TikTok bila ada. Tambahkan strip info jam operasional / ekspektasi waktu balas dan lokasi umum (kota/region saja, **bukan alamat lengkap**, demi privasi usaha rumahan). Opsional: FAQ singkat berupa accordion (cara pesan via WhatsApp, pengiriman, kondisi barang thrift, kebijakan stok 1) untuk mengurangi pertanyaan berulang, dan CTA penutup mengajak follow Instagram agar tidak ketinggalan drop.
 
 ### 7.5 Wishlist (`/akun/wishlist`) ⭐ BARU
 - Grid produk yang sudah disimpan user (mirip kartu katalog).
@@ -276,10 +277,6 @@ wishlists (
   product_id  uuid,
   created_at  timestamptz,
   unique(user_id, product_id)
-)
-
-messages (
-  id, name, message, created_at
 )
 
 -- Fase 2 (disiapkan nanti): orders, order_items, cart_items,
