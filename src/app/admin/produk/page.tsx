@@ -18,14 +18,14 @@ export default async function AdminProdukPage() {
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-xl font-semibold text-charcoal">Kelola Produk</h1>
           <p className="mt-0.5 text-sm text-warm-gray">{products.length} produk</p>
         </div>
         <Link
           href="/admin/produk/baru"
-          className="rounded-xl bg-charcoal px-4 py-2 text-sm font-semibold text-cream transition-colors hover:bg-charcoal/90"
+          className="shrink-0 rounded-xl bg-charcoal px-4 py-2 text-sm font-semibold text-cream transition-colors hover:bg-charcoal/90"
         >
           + Tambah Produk
         </Link>

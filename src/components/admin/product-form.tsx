@@ -142,7 +142,7 @@ export function ProductForm({ initialData }: Props) {
       <section className="space-y-4 rounded-2xl border border-soft-border bg-warm-white p-5">
         <h2 className="text-sm font-semibold text-charcoal">Spesifikasi</h2>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Field label="Ukuran" error={errors.size?.message}>
             <input
               {...register('size')}
@@ -175,7 +175,7 @@ export function ProductForm({ initialData }: Props) {
       <section className="space-y-4 rounded-2xl border border-soft-border bg-warm-white p-5">
         <h2 className="text-sm font-semibold text-charcoal">Status & Pengaturan</h2>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Field label="Status" error={errors.status?.message} required>
             <select {...register('status')} className={inputCls}>
               <option value="available">Tersedia</option>
