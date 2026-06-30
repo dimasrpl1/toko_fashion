@@ -5,11 +5,11 @@ import Link from 'next/link'
 import { m } from 'motion/react'
 
 /*
- * Ganti URL di bawah dengan foto brand story (portrait 3:4, min 900×1200px).
- * Bisa foto behind-the-scenes, flat lay, atau mood shot yang hangat.
+ * Foto brand story sementara dari Unsplash (flat lay hangat) — ganti dengan
+ * foto brand asli kapan saja.
  */
-// judul asli nya nojstudioid cuman untuk sementara n1mpo dulu
-const STORY_IMG = 'https://placehold.co/600x800/A18A6A/F4EFE7?text=n1mpo'
+const STORY_IMG =
+  'https://images.unsplash.com/photo-1584061516874-ed56f46d8e13?w=900&h=1200&fit=crop&q=80&auto=format'
 
 export function BrandStory() {
   const img = STORY_IMG

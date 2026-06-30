@@ -13,22 +13,22 @@ export interface HeroSlide {
 }
 
 /*
- * Ganti URL di bawah dengan foto brand yang sudah dikurasi.
- * Gunakan foto portrait dengan rasio 2:3, ukuran minimal 1200×1800px.
- * Semua foto harus punya komposisi dan tone yang konsisten.
+ * Foto brand sementara dari Unsplash (lisensi bebas) — ganti dengan foto
+ * brand asli kapan saja. fill + object-cover menyesuaikan crop otomatis
+ * antara mobile (portrait) dan desktop (landscape) dari container yang sama.
  */
 const SLIDES: HeroSlide[] = [
   {
-    image: 'https://placehold.co/800x1200/211F1C/F4EFE7?text=Look+01',
-    alt: 'n1mpo look 01',
+    image: 'https://images.unsplash.com/photo-1617391834151-3a12f8495ca3?w=1200&h=1800&fit=crop&q=80&auto=format',
+    alt: 'Outfit floral retro — koleksi n1mpo',
   },
   {
-    image: 'https://placehold.co/800x1200/3D3B38/A18A6A?text=Look+02',
-    alt: 'n1mpo look 02',
+    image: 'https://images.unsplash.com/photo-1578476719994-464aef88d2da?w=1200&h=1800&fit=crop&q=80&auto=format',
+    alt: 'Outfit blazer editorial — koleksi n1mpo',
   },
   {
-    image: 'https://placehold.co/800x1200/6B5A3E/EFE6D8?text=Look+03',
-    alt: 'n1mpo look 03',
+    image: 'https://images.unsplash.com/photo-1579460363654-292b70bae55f?w=1200&h=1800&fit=crop&q=80&auto=format',
+    alt: 'Outfit cardigan earth tone — koleksi n1mpo',
   },
 ]
 
@@ -43,7 +43,7 @@ export function HeroFull() {
   }, [all.length])
 
   return (
-    <section className="relative h-[100dvh] w-full overflow-hidden bg-charcoal">
+    <section className="relative h-dvh w-full overflow-hidden bg-charcoal">
       {/* Background image — crossfade */}
       <AnimatePresence initial={false}>
         <m.div
@@ -66,7 +66,7 @@ export function HeroFull() {
       </AnimatePresence>
 
       {/* Gradient — lebih tebal di bawah untuk teks */}
-      <div className="absolute inset-0 bg-gradient-to-t from-charcoal/95 via-charcoal/25 to-charcoal/10" />
+      <div className="absolute inset-0 bg-linear-to-t from-charcoal/95 via-charcoal/25 to-charcoal/10" />
 
       {/* Konten */}
       <div className="absolute inset-x-0 bottom-0 flex flex-col px-6 pb-28 md:px-12 md:pb-20 lg:px-20">

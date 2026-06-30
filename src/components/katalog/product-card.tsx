@@ -6,27 +6,29 @@ import { cn } from '@/lib/utils'
 import { formatPrice } from '@/lib/format'
 import type { Product } from '@/lib/types'
 import { WishlistButton } from '@/components/wishlist/wishlist-button'
-
-// judul asli nya nojstudioid cuman untuk sementara n1mpo dulu
-const PLACEHOLDER = 'https://placehold.co/600x800/F4EFE7/8C8478?text=n1mpo'
+import { NoPhoto } from '@/components/ui/no-photo'
 
 type CardProduct = Pick<Product, 'id' | 'slug' | 'title' | 'price' | 'images' | 'status'>
 
 export function ProductCard({ product }: { product: CardProduct }) {
-  const img1   = product.images[0] ?? PLACEHOLDER
+  const img1   = product.images[0] ?? null
   const img2   = product.images[1] ?? null
   const isSold = product.status === 'sold'
 
   return (
     <article className="group overflow-hidden rounded-xl border border-soft-border bg-warm-white">
       <Link href={`/katalog/${product.slug}`} className="relative block aspect-3/4 overflow-hidden">
-        <Image
-          src={img1}
-          alt={product.title}
-          fill
-          sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-          className={cn('object-cover transition-opacity duration-300', img2 ? 'group-hover:opacity-0' : '')}
-        />
+        {img1 ? (
+          <Image
+            src={img1}
+            alt={product.title}
+            fill
+            sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            className={cn('object-cover transition-opacity duration-300', img2 ? 'group-hover:opacity-0' : '')}
+          />
+        ) : (
+          <NoPhoto />
+        )}
 
         {img2 && (
           <Image

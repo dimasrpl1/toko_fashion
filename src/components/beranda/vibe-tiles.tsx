@@ -8,12 +8,16 @@ interface Props {
   categories: string[]
 }
 
-/* Warna tile berputar dari palet brand — konsisten & editorial */
-const COLORS = [
-  { bg: '211F1C', text: 'F4EFE7' },
-  { bg: '6B5A3E', text: 'EFE6D8' },
-  { bg: '3D3B38', text: 'A18A6A' },
-  { bg: 'A18A6A', text: 'F4EFE7' },
+/*
+ * Foto tile berputar (Unsplash, sementara) — kategori datang dinamis dari DB
+ * jadi tidak bisa dipetakan 1:1, foto dirotasi agar tetap terasa editorial.
+ * Ganti dengan foto brand asli per kategori kapan saja.
+ */
+const TILE_IMAGES = [
+  'https://images.unsplash.com/photo-1505846951821-e25bacf2eccd?w=1000&h=1300&fit=crop&q=80&auto=format',
+  'https://images.unsplash.com/photo-1557433841-e964bdf8c263?w=1000&h=1300&fit=crop&q=80&auto=format',
+  'https://images.unsplash.com/photo-1581015053883-df23bd1338b0?w=1000&h=1300&fit=crop&q=80&auto=format',
+  'https://images.unsplash.com/photo-1617690032703-f991ed0e0ee6?w=1000&h=1300&fit=crop&q=80&auto=format',
 ]
 
 export function VibeTiles({ categories }: Props) {
@@ -45,10 +49,10 @@ export function VibeTiles({ categories }: Props) {
         {/* Tiles */}
         <div className="grid grid-cols-2 gap-2.5 md:gap-3">
           {displayed.map((cat, i) => {
-            const { bg, text } = COLORS[i % COLORS.length]
             /* Tile terakhir full-width di mobile jika hitungan ganjil */
-            const isLast = i === displayed.length - 1
-            const colSpan = isLast && isOdd ? 'col-span-2 md:col-span-1' : undefined
+            const isLast    = i === displayed.length - 1
+            const colSpan   = isLast && isOdd ? 'col-span-2 md:col-span-1' : undefined
+            const tileImage = TILE_IMAGES[i % TILE_IMAGES.length]
 
             return (
               <m.div
@@ -67,14 +71,13 @@ export function VibeTiles({ categories }: Props) {
                   href={`/katalog?kategori=${encodeURIComponent(cat)}`}
                   className="group relative block overflow-hidden rounded-xl"
                 >
-                  {/* Placeholder dengan warna brand — ganti dengan foto nyata per kategori */}
                   <div
                     className={
                       isLast && isOdd ? 'aspect-2/1 md:aspect-3/4' : 'aspect-3/4'
                     }
                   >
                     <Image
-                      src={`https://placehold.co/600x800/${bg}/${text}?text=${encodeURIComponent(cat)}`}
+                      src={tileImage}
                       alt={cat}
                       fill
                       sizes="(max-width: 768px) 50vw, 25vw"

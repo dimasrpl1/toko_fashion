@@ -5,9 +5,7 @@ import Image from 'next/image'
 import { m, AnimatePresence } from 'motion/react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
-
-// judul asli nya nojstudioid cuman untuk sementara n1mpo dulu
-const PLACEHOLDER = 'https://placehold.co/600x800/F4EFE7/8C8478?text=n1mpo'
+import { NoPhoto } from '@/components/ui/no-photo'
 
 const SWIPE_THRESHOLD = 50   // px offset minimum
 const SWIPE_VELOCITY  = 300  // px/s minimum
@@ -25,7 +23,7 @@ interface Props {
 }
 
 export function FotoGaleri({ images, title, isSold }: Props) {
-  const imgs = images.length > 0 ? images : [PLACEHOLDER]
+  const imgs = images
   const [current, setCurrent]     = useState(0)
   const [direction, setDirection] = useState(0)
 
@@ -36,10 +34,25 @@ export function FotoGaleri({ images, title, isSold }: Props) {
 
   const showArrows = imgs.length > 1
 
+  if (imgs.length === 0) {
+    return (
+      <div className="relative aspect-3/4 overflow-hidden rounded-2xl bg-warm-white">
+        <NoPhoto />
+        {isSold && (
+          <div className="pointer-events-none absolute inset-0 flex items-center justify-center rounded-2xl bg-charcoal/75">
+            <span className="text-sm font-semibold tracking-[0.25em] text-cream">
+              SUDAH TERJUAL
+            </span>
+          </div>
+        )}
+      </div>
+    )
+  }
+
   return (
     <div className="flex flex-col gap-3">
       {/* ── Main image ──────────────────────────────────────────── */}
-      <div className="group relative aspect-[3/4] overflow-hidden rounded-2xl bg-warm-white">
+      <div className="group relative aspect-3/4 overflow-hidden rounded-2xl bg-warm-white">
         <AnimatePresence initial={false} custom={direction} mode="popLayout">
           <m.div
             key={current}

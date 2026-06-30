@@ -5,11 +5,11 @@ import Link from 'next/link'
 import { m } from 'motion/react'
 
 /*
- * Ganti URL di bawah dengan foto editorial brand (portrait 4:5, min 1200×1500px).
- * Foto idealnya berwarna gelap/moodier agar kontras dengan teks cream.
+ * Foto editorial sementara dari Unsplash — moody, kontras dengan teks cream.
+ * Ganti dengan foto brand asli kapan saja.
  */
-// judul asli nya nojstudioid cuman untuk sementara n1mpo dulu
-const EDITORIAL_IMG = 'https://placehold.co/800x1000/211F1C/A18A6A?text=n1mpo'
+const EDITORIAL_IMG =
+  'https://images.unsplash.com/photo-1687825520757-daf83926a93e?w=1200&h=1500&fit=crop&q=80&auto=format'
 const EDITORIAL_HREF = '/katalog'
 
 export function EditorialBlock() {

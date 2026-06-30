@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     : `${price}${product.size ? ` · Ukuran ${product.size}` : ''} · n1mpo`
   const ogImage   = product.images[0]
     ? [{ url: product.images[0], width: 600, height: 800, alt: product.title }]
-    : []
+    : [{ url: '/nojstudioid.jpg', width: 512, height: 512, alt: 'n1mpo' }]
 
   return {
     title: product.title,
@@ -49,7 +49,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card:        'summary_large_image',
       title:       product.title,
       description: desc,
-      images:      product.images[0] ? [product.images[0]] : [],
+      images:      product.images[0] ? [product.images[0]] : ['/nojstudioid.jpg'],
     },
   }
 }
